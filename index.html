@@ -1,11 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock, Paper, Scissors</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Helvetica;
+            color: aliceblue;
+            background-color: rgb(21, 21, 21);
+        }
+
+        .wrapper {
+            margin: 0 auto;
+            text-align: center;
+            border: 1px solid rgb(74, 74, 74);
+            border-radius: 12px;
+            width: 700px;
+            padding: 20px;
+            background-color: rgb(29, 29, 29);
+        }
+
+        h1 {
+            margin-bottom: 24px;
+        }
+
+        .game-status {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .game-score {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .game-score p {
+            font-size: 1.5rem;
+            border: 1px solid rgb(74, 74, 74);
+            background-color: rgb(36, 36, 36);
+            padding: 12px;
+        }
+
+        button {
+            padding: 8px;
+            border-radius: 8px;
+            border: none;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Rock, Paper, Scissors</h1>
+    <div class="wrapper">
+        <h1>Rock, Paper, Scissors</h1>
+
+        <div class="game-status">
+
+            <div class="game-round-text">Press a button to play a round.</div>
+
+            <div class="game-score">
+                <p class="user-score">0</p>
+                <p class="computer-score">0</p>
+            </div>
+
+        </div>
+
+        <button class="rock">Rock</button>
+        <button class="paper">Paper</button>
+        <button class="scissors">Scissors</button>
+    </div>
+
+    <script>
+        const gameTxt = document.querySelector(".game-round-text");
+        const userScore = document.querySelector(".user-score");
+        const computerScore = document.querySelector(".computer-score");
+
+        let userScoreNum = 0;
+        let computerScoreNum = 0;
+
+        const btns = document.querySelectorAll("button");
+
+        for (const btn of btns) {
+            btn.addEventListener("click", e => {
+                playRound(e.target.textContent.toLowerCase());
+            })
+        }
+
+        function playRound(selection) {
+
+            const computerChoices = ["rock", "paper", "scissors"];
+            const computerChoice = computerChoices[Math.floor(Math.random() * computerChoices.length)];
+
+            if (selection === computerChoice) {
+                gameTxt.textContent = `You both picked ${computerChoice}! Try again.`;
+            } else if ((selection === "rock" && computerChoice === "scissors") ||
+                (selection === "paper" && computerChoice === "rock") ||
+                (selection === "scissors" && computerChoice === "paper")) {
+                userScoreNum++;
+                gameTxt.textContent = `You picked ${selection} and your opponent picked ${computerChoice}. You win!`;
+            } else {
+                computerScoreNum++;
+                gameTxt.textContent = `You picked ${selection} and your opponent picked ${computerChoice}. You lose! Try again.`;
+            }
+
+            updateGame(userScoreNum, computerScoreNum);
+
+        }
+
+        function updateGame(a, b) {
+            userScore.textContent = userScoreNum;
+            computerScore.textContent = computerScoreNum;
+
+            if (a === 5) {
+                gameTxt.textContent = "You win!"
+                resetGame();
+            } else if (b === 5) {
+                gameTxt.textContent = "You lose. Try again!"
+                resetGame();
+            } 
+        }
+
+    </script>
 </body>
+
 </html>
